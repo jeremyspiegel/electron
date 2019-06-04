@@ -60,6 +60,8 @@ build_script:
   - ps: >-
       if ($env:GN_CONFIG -eq 'release') {
         $env:GCLIENT_EXTRA_ARGS="--custom-var=checkout_boto=True --custom-var=checkout_requests=True"
+      } else {
+        $env:NINJA_STATUS="[%r processes, %f/%t @ %o/s : %es ] "
       }
   - >-
       gclient config
@@ -82,6 +84,7 @@ build_script:
   - ninja -C out/Default electron:electron_mksnapshot_zip
   - ninja -C out/Default electron:electron_chromedriver_zip
   - ninja -C out/Default third_party/electron_node:headers
+  - if "%GN_CONFIG%"=="testing" ( python depot_tools\post_build_ninja_summary.py -C out\Default )  
   - appveyor PushArtifact out/Default/dist.zip
   - appveyor PushArtifact out/Default/chromedriver.zip
   - appveyor PushArtifact out/ffmpeg/ffmpeg.zip
