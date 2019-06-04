@@ -693,12 +693,11 @@ steps-electron-build: &steps-electron-build
     - *step-electron-build
     - *step-electron-dist-build
     - *step-electron-dist-store
+    - *step-ninja-summary
 
     # Node.js headers
     - *step-nodejs-headers-build
     - *step-nodejs-headers-store
-
-    - *step-ninja-summary
 
     - *step-show-sccache-stats
 
@@ -718,6 +717,7 @@ steps-electron-build-for-tests: &steps-electron-build-for-tests
     - *step-maybe-electron-dist-strip
     - *step-electron-dist-build
     - *step-electron-dist-store
+    - *step-ninja-summary
 
     # Node.js headers
     - *step-nodejs-headers-build
@@ -735,9 +735,6 @@ steps-electron-build-for-tests: &steps-electron-build-for-tests
     - *step-ffmpeg-gn-gen
     - *step-ffmpeg-build
     - *step-ffmpeg-store
-
-    # Ninja summary
-    - *step-ninja-summary
 
     # Save all data needed for a further tests run.
     - *step-persist-data-for-tests
