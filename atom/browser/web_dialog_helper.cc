@@ -117,9 +117,10 @@ class FileSelectHelper : public base::RefCounted<FileSelectHelper>,
           base_dir = paths[0];
 
           // Actually enumerate soemwhere off-thread
-          base::SequencedTaskRunnerHandle::Get()->PostTask(
-              FROM_HERE, base::BindOnce(&FileSelectHelper::EnumerateDirectory,
-                                        this, base_dir));
+          base::PostTaskWithTraits(
+              FROM_HERE, {content::BrowserThread::UI},
+              base::BindOnce(&FileSelectHelper::EnumerateDirectory, this,
+                             base_dir));
         } else {
           for (auto& path : paths) {
             file_info.push_back(FileChooserFileInfo::NewNativeFile(
@@ -182,7 +183,10 @@ class FileSelectHelper : public base::RefCounted<FileSelectHelper>,
   }
 
   // content::WebContentsObserver:
-  void WebContentsDestroyed() override { render_frame_host_ = nullptr; }
+  void WebContentsDestroyed() override {
+    render_frame_host_ = nullptr;
+    Release();
+  }
 
   content::RenderFrameHost* render_frame_host_;
   std::unique_ptr<content::FileSelectListener> listener_;
@@ -275,7 +279,7 @@ void DirectoryListerHelper::OnListFile(
 }
 void DirectoryListerHelper::OnListDone(int error) {
   std::vector<FileChooserFileInfoPtr> file_info;
-  for (auto path : paths_)
+  for (auto& path : paths_)
     file_info.push_back(FileChooserFileInfo::NewNativeFile(
         blink::mojom::NativeFileInfo::New(path, base::string16())));
 
