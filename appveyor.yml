@@ -84,7 +84,7 @@ build_script:
   - ninja -C out/Default electron:electron_mksnapshot_zip
   - ninja -C out/Default electron:electron_chromedriver_zip
   - ninja -C out/Default third_party/electron_node:headers
-  - if "%GN_CONFIG%"=="testing" ( python depot_tools\post_build_ninja_summary.py -C out\Default )  
+  - if "%GN_CONFIG%"=="testing" ( python third_party\depot_tools\post_build_ninja_summary.py -C out\Default )  
   - appveyor PushArtifact out/Default/dist.zip
   - appveyor PushArtifact out/Default/chromedriver.zip
   - appveyor PushArtifact out/ffmpeg/ffmpeg.zip

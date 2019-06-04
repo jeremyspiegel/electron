@@ -542,7 +542,8 @@ step-ninja-summary: &step-ninja-summary
   run:
     name: Print ninja summary
     command: |
-      python src/third_party/depot_tools/post_build_ninja_summary.py -C out/Default
+      cd src
+      python third_party/depot_tools/post_build_ninja_summary.py -C out/Default
 
 # Lists of steps.
 steps-lint: &steps-lint
