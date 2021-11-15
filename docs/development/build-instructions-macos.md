@@ -22,10 +22,11 @@ $ npx @electron/check-python-tls
 
 If the script returns that your configuration is using an outdated security
 protocol, you can either update macOS to High Sierra or install a new version
-of Python 2.7.x. To upgrade Python, use [Homebrew](https://brew.sh/):
+of Python 2.7.x. To upgrade Python, use [Homebrew](https://brew.sh/) and pyenv
+(https://github.com/pyenv/pyenv):
 
 ```sh
-$ brew install python@2 && brew link python@2 --force
+$ brew install pyenv && pyenv install 2.7.18 && pyenv global 2.7.18
 ```
 
 If you are using Python as provided by Homebrew, you also need to install
